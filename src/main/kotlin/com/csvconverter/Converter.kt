@@ -40,9 +40,9 @@ class Converter {
      * like the example input file does it
      */
     fun stringToBigDecimal(count: String): BigDecimal {
-        val nf = DecimalFormat("###,###.###")
-        nf.isParseBigDecimal = true
-        return (nf.parse(count) as BigDecimal).setScale(2, BigDecimal.ROUND_HALF_UP)
+        val decimalFormat = DecimalFormat("###,###.###")
+        decimalFormat.isParseBigDecimal = true
+        return (decimalFormat.parse(count) as BigDecimal).setScale(2, BigDecimal.ROUND_HALF_UP)
     }
 
     data class InputData(
