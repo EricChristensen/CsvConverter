@@ -37,14 +37,14 @@ tasks.create("convertFile", JavaExec::class) {
     }
 
     if (project.hasProperty("outputFile")) {
-        files.add(project.properties["inputFile"].toString())
+        files.add(project.properties["outputFile"].toString())
     } else {
         println("Using default file output.csv")
         files.add("output.csv")
     }
 
     if (project.hasProperty("logFile")) {
-        files.add(project.properties["inputFile"].toString())
+        files.add(project.properties["logFile"].toString())
     } else {
         println("Using default file log.txt")
         files.add("log.txt")
