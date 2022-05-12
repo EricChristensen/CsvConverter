@@ -4,7 +4,7 @@ This is a simple CSV converter. It is meant to convert a csv file formatted like
 |Order Number|Year|Month|Day|Product Number|Product Name|Count|Extra Col1|Extra Col2|Empty Column|
 |------------|----|-----|---|--------------|------------|-----|----------|----------|------------|
 |1000|2018|1|1|P-10001|Arugola|"5,250.50"|Lorem|Ipsum|
-|1001|2017|12|12|P-10002|Iceberg lettuce|500.00|Lorem,Ipsum|
+|1001|2017|12|12|P-10002|Iceberg lettuce|500.00|Lorem|Ipsum|
 
 To
 
