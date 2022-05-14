@@ -1,30 +1,16 @@
 package com.csvconverter
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.io.File
 import java.math.BigDecimal
-import java.text.DecimalFormat
 import java.time.LocalDate
 
-class Converter {
+class Converter : SuperConverter<Converter.InputData, Converter.OutputData> {
+    override val csvHelper: CsvHelper
+        get() = CsvHelper()
 
-    private val csvHelper = CsvHelper()
-
-    fun convertAndOutput(inputFilePath: String, outputFilePath: String, logFile: String = "log.txt") {
-        val items: List<InputData> = csvHelper.readCsvFile(inputFilePath)
-        val outputItems: List<OutputData> = items.mapIndexedNotNull { index, it ->
-            try {
-                inputToOutput(it)
-            } catch (e: Exception) {
-                File(logFile).writeText("Row " + index + " had a problem and didn't get converted. Exception message: " + e.message)
-                null
-            }
-        }
-        csvHelper.writeCsvFile(outputItems, outputFilePath)
-    }
-
-    fun inputToOutput(input: InputData) : OutputData {
+    override fun inputToOutput(input: InputData): OutputData {
         return OutputData(
+            id = input.orderNumber,
             orderId = input.orderNumber.toInt(),
             orderDate = LocalDate.of(input.year.toInt(), input.month.toInt(), input.day.toInt()),
             productId = input.productNumber,
@@ -34,18 +20,9 @@ class Converter {
         )
     }
 
-    /**
-     * We format the big decimal to remove commas, that way we don't
-     * have extra commas in our csv or need "quotes" around the value
-     * like the example input file does it
-     */
-    fun stringToBigDecimal(count: String): BigDecimal {
-        val decimalFormat = DecimalFormat("###,###.###")
-        decimalFormat.isParseBigDecimal = true
-        return (decimalFormat.parse(count) as BigDecimal).setScale(2, BigDecimal.ROUND_HALF_UP)
-    }
-
     data class InputData(
+        @JsonProperty("Id")
+        val id: String,
         @JsonProperty("Order Number")
         val orderNumber: String,
         @JsonProperty("Year")
@@ -68,7 +45,10 @@ class Converter {
         val emptyColumn: String
     )
 
-    data class OutputData(
+    class OutputData(
+        @JsonProperty("Id")
+        val id: String,
+
         @JsonProperty("OrderID")
         val orderId: Int,
         @JsonProperty("OrderDate")
@@ -82,4 +62,5 @@ class Converter {
         @JsonProperty("Unit")
         val unit: String
     )
+
 }
