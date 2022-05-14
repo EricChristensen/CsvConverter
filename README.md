@@ -55,7 +55,7 @@ also make more sense to me because python is good for small and quick things, bu
 of this could grow beyond what python is nice for and even the original example made more
 sense to organize with kotlin.
 
-The architecture is pretty simple. There is a runner class that has the programs main method.
+The architecture is pretty simple. There is a runner class that has the program's main method.
 This main method can be run via two gradle tasks. One gradle task allows for specifying the input,
 output, and log file via the command line, and the other task allows the user to specify each of these
 via a configuration file. If the input file is specified but does not exist, the program will indicate
@@ -70,7 +70,7 @@ from the csv file with the CsvHelper, converted into the output objects and then
 file with the CsvHelper. Any conversions that cannot be completed are logged to the log file.
 
 #### Next steps
-Turning the converted into an interface was the next step. The classes that extend from the interface
+Turning the converter into an interface was the next step. The classes that extend from the interface
 would just need to define their input object, output object, and inputToOutput function. This would
 open up the door to being able to work with many inputs and outputs and use collections of different converters
 in classes that cared to do so. And additional next step would be to define the input and output objects
@@ -78,10 +78,10 @@ in a more readable language like google protobuf, that could be more easily revi
 technical people. This would definitely be out of the 6 hour scope I believe. Something that could have been
 inside the scope is refining the failed row logger. Another method, `validate` could be added to the converter interface.
 Currently, rows are only not converted if they cannot be converted, however, it would make sense to have
-additional cases where the input rows should not make it to the output row. Missing fields are converted just
-fine without error, but it would make sense to omit some of these from the output document. For example
-an input row with an empty productId or productNumber may be converted just fine, but it might not make sense
-to include these in the output document. This would be a very logical thing to include in the converter interface.
+additional cases where the input rows should not make it to the output row. Some missing fields are converted just
+fine without error, empty strings are converted to empty strings, but it would make sense to omit some of these from the
+output document. For example an input row with an empty productId or productNumber may be converted just fine, but it might
+not make sense to include these in the output document. This would be a very logical thing to include in the converter interface.
 
 # Documentation of existing project
 This is a simple CSV converter. It is meant to convert a csv file formatted like:
@@ -100,7 +100,9 @@ To
 
 ## Usage
 To run the project run:
+
 `./gradlew build convertFileFileInput -PconfigurationFile="configurationFile.txt"`
+
 The configuration file should have 3 lines:
 input.csv
 output.csv
@@ -110,6 +112,7 @@ program will exit before trying any conversion.
 
 If you want to run the program via the command line and specify the input, output, and log files
 via the command line, you can run:
+
 `./gradlew convertFile -PinputFile="path/to/input.csv" -PoutputFile="path/to/output.csv" -PlogFile="path/to/log.txt`
 
 If you do not specify parameters, the defaults of orders.csv, output.csv, and log.txt will be used.
