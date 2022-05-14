@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.File
 
 plugins {
     kotlin("jvm") version "1.6.20"
@@ -26,8 +27,24 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+tasks.create("convertFileFileInput", JavaExec::class) {
+    val files = mutableListOf<String>()
+    if (project.hasProperty("configurationFile")) {
+        val configFile = File(project.properties["configurationFile"].toString())
+        configFile.readLines().forEach {
+            println("file line:  " + it)
+            files.add(it)
+        }
+    } else {
+        println("Configuration file was not specified. please specify -PconfigurationFile. Running with defaults")
+    }
 
-tasks.create("convertFile", JavaExec::class) {
+    args = files
+    mainClass.set("com.csvconverter.Runner")
+    classpath = sourceSets["main"].runtimeClasspath
+}
+
+tasks.create("convertFileCliInput", JavaExec::class) {
     val files = mutableListOf<String>()
     if (project.hasProperty("inputFile")) {
         files.add(project.properties["inputFile"].toString())
